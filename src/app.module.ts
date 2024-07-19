@@ -8,6 +8,7 @@ import { UserModule } from './modules/user/user.module';
 import { TokenModule } from './modules/token/token.module';
 import { CategoryModule } from './modules/category/category.module';
 import { ImagesModule } from './modules/images/images.module';
+import { ExerciseModule } from './modules/exercise/exercise.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ImagesModule } from './modules/images/images.module';
     TokenModule,
     CategoryModule,
     ImagesModule,
+    ExerciseModule,
   ],
 })
 export class AppModule {}

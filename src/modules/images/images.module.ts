@@ -21,5 +21,6 @@ import { ImageRepository } from './store/image.repository';
   ],
   controllers: [ImagesController],
   providers: [ImagesService, ImageRepository],
+  exports: [ImagesService, ImageRepository],
 })
 export class ImagesModule {}
