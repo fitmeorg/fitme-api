@@ -1,17 +1,19 @@
 import { UseInterceptors, BadRequestException } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 
-export function InterceptorsFile(
+export function CustomFileInterceptor(
   dest: string,
   sizeFile: number,
   extensions: string[],
+  fieldName: string,
+  maxCount: number,
 ) {
   return UseInterceptors(
-    FileInterceptor('file', {
+    FilesInterceptor(fieldName, maxCount, {
       storage: diskStorage({
-        destination: dest,
+        destination: `./${dest}`,
         filename: (req, file, callback) => {
           const fileExtName = extname(file.originalname);
           const uniqueSuffix =
@@ -22,7 +24,7 @@ export function InterceptorsFile(
       }),
       fileFilter: (req, file, callback) => {
         const fileExt = extname(file.originalname).toLowerCase();
-        if (!extensions.includes(fileExt.substr(1))) {
+        if (!extensions.includes(fileExt.substring(1))) {
           callback(
             new BadRequestException(`Extension ${fileExt} not allowed`),
             false,
