@@ -13,20 +13,28 @@ export class ImagesService {
     private readonly configService: ConfigService,
   ) {}
 
-  async create(file: Express.Multer.File) {
+  async create(file: Array<Express.Multer.File>) {
     try {
-      const { width, height } = await this.getImageDimensions(file);
+      const idImage = [];
 
-      const fileDocument = await this.imageRepository.create({
-        url: `${this.configService.get('HOST_API')}/images/${file.destination.substring(2)}/${file.filename}`,
-        name: file.filename,
-        size: file.size,
-        format: file.mimetype,
-        height,
-        width,
-      });
-      return fileDocument;
-    } catch (error) {}
+      for (const image of file) {
+        const { width, height } = await this.getImageDimensions(image);
+
+        const fileDocument = await this.imageRepository.create({
+          url: `${this.configService.get('HOST_API')}/images/${image.destination.substring(2)}/${image.filename}`,
+          name: image.filename,
+          size: image.size,
+          format: image.mimetype,
+          height,
+          width,
+        });
+
+        idImage.push(fileDocument._id);
+      }
+      return idImage;
+    } catch (error) {
+      return error;
+    }
   }
 
   async remove(idImage: string, pathImage: string) {
