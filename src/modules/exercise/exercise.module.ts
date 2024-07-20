@@ -43,5 +43,6 @@ import { PaginationService } from '@modules/pagination/pagination.service';
     ExerciseRepository,
     PaginationService,
   ],
+  exports: [ExerciseService, ExerciseRepository],
 })
 export class ExerciseModule {}

@@ -9,6 +9,7 @@ import { TokenModule } from './modules/token/token.module';
 import { CategoryModule } from './modules/category/category.module';
 import { ImagesModule } from './modules/images/images.module';
 import { ExerciseModule } from './modules/exercise/exercise.module';
+import { RoutineModule } from './modules/routine/routine.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ExerciseModule } from './modules/exercise/exercise.module';
     CategoryModule,
     ImagesModule,
     ExerciseModule,
+    RoutineModule,
   ],
 })
 export class AppModule {}
