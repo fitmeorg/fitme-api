@@ -51,7 +51,7 @@ export class AuthService {
     });
 
     return await this.tokenService.createUserToken({
-      id: user._id.toString(),
+      id: parseEntity(user),
       username: accessUser.username,
       roles: [...accessUser.roles],
     });
@@ -61,11 +61,11 @@ export class AuthService {
     const access = await this.authRepository.findLogin(loginDTO);
 
     const user = await this.userRepository.findOneOrFail({
-      auth: access._id,
+      auth: parseEntity(access),
     });
 
     return await this.tokenService.createUserToken({
-      id: user._id.toString(),
+      id: parseEntity(user),
       username: access.username,
       roles: [...access.roles],
     });
@@ -90,17 +90,13 @@ export class AuthService {
   }
 
   async loginGoogle(req: any) {
-    try {
-      const access = await this.authRepository.findUserByMail(req.user.email);
+    const access = await this.authRepository.findUserByMail(req.user.email);
 
-      if (!access) {
-        return null;
-      }
-
-      return this.userRepository.findOne({ auth: access._id });
-    } catch (error) {
-      return error;
+    if (!access) {
+      return null;
     }
+
+    return this.userRepository.findOne({ auth: parseEntity(access) });
   }
 
   async googleAuthCallback(req: any, res: Response) {
@@ -110,10 +106,12 @@ export class AuthService {
       user = await this.registerGoogle(req);
     }
 
-    const access = await this.authRepository.findByIdOrFail(user.auth._id);
+    const access = await this.authRepository.findByIdOrFail(
+      parseEntity(user.auth),
+    );
 
     const token = await this.tokenService.createUserToken({
-      id: user._id.toString(),
+      id: parseEntity(user),
       username: `${req.user.firstName}`,
       roles: [...access.roles],
     });
@@ -150,7 +148,7 @@ export class AuthService {
 
     const hash = await bcrypt.hash(changePassword.newPassword, SALT);
 
-    await this.authRepository.update(access._id.toString(), {
+    await this.authRepository.update(parseEntity(access), {
       password: hash,
     });
 
@@ -166,11 +164,11 @@ export class AuthService {
     }
 
     const user = await this.userRepository.findOneOrFail({
-      auth: userAccess._id,
+      auth: parseEntity(userAccess),
     });
 
     const token = this.tokenService.createUserToken({
-      id: user._id.toString(),
+      id: parseEntity(user),
       username: user.name,
       roles: [...userAccess.roles],
     });
@@ -187,7 +185,7 @@ export class AuthService {
 
     const hash = await bcrypt.hash(changePassword.newPassword, SALT);
 
-    await this.authRepository.update(access._id.toString(), {
+    await this.authRepository.update(parseEntity(access), {
       password: hash,
     });
 

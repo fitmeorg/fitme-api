@@ -5,6 +5,7 @@ import { existsSync, unlinkSync } from 'fs';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
 import * as imageSize from 'image-size';
+import { parseEntity } from '@common/util';
 
 @Injectable()
 export class ImagesService {
@@ -43,7 +44,7 @@ export class ImagesService {
     }
     unlinkSync(path);
 
-    await this.imageRepository.remove(image._id.toString());
+    await this.imageRepository.remove(parseEntity(image));
 
     return { message: 'File deleted successfully' };
   }
