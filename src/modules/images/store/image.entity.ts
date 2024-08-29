@@ -5,16 +5,16 @@ export type ImageDocument = HydratedDocument<Image>;
 
 @Schema()
 export class Image {
-  @Prop({ required: false, unique: true })
+  @Prop({ unique: true })
   url: string;
 
   @Prop()
   name: string;
 
-  @Prop({ required: false })
+  @Prop()
   create_by?: string;
 
-  @Prop({ required: false })
+  @Prop()
   thumbnail_url?: string;
 
   @Prop()
