@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
+import { Category } from '@modules/category/store/category.entity';
+import { Image } from '@modules/images/store/Image.entity';
 
 export type ExerciseDocument = HydratedDocument<Exercise>;
 
@@ -9,22 +11,22 @@ export class Exercise {
   name: string;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }] })
-  categories: string[];
+  categories: Category[];
 
   @Prop()
   duration_minutes?: number;
 
-  @Prop({ required: false })
+  @Prop()
   repetitions?: number;
 
-  @Prop({ required: false })
+  @Prop()
   series?: number;
 
   @Prop()
   description: string;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Image' }] })
-  images: string[];
+  images: Image[];
 }
 
 export const ExerciseSchema = SchemaFactory.createForClass(Exercise);

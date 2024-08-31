@@ -1,9 +1,4 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserTokenDTO } from './dto/user-token.dto';
 import { JwtService } from '@nestjs/jwt';
 import { RefreshToken } from './dto/refresh-token.dto';
@@ -16,46 +11,36 @@ export class TokenService {
   ) {}
 
   async createUserToken(createTokenDto: UserTokenDTO) {
-    try {
-      const payload = {
-        sub: createTokenDto.id,
-        username: createTokenDto.username,
-        roles: [...createTokenDto.roles],
-      };
+    const payload = {
+      sub: createTokenDto.id,
+      username: createTokenDto.username,
+      roles: [...createTokenDto.roles],
+    };
 
-      return {
-        access_token: await this.jwtService.signAsync(payload),
-      };
-    } catch (error) {}
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+    };
   }
 
   async refreshUserToken(refreshToken: RefreshToken) {
-    try {
-      const { username, sub, roles } = refreshToken;
-      const payload = { username, sub, roles };
-      const accessToken = await this.jwtService.signAsync(payload, {
-        expiresIn: '1d',
-      });
+    const { username, sub, roles } = refreshToken;
+    const payload = { username, sub, roles };
+    const accessToken = await this.jwtService.signAsync(payload, {
+      expiresIn: '1d',
+    });
 
-      return { access_token: accessToken };
-    } catch (error) {
-      throw new UnauthorizedException('Invalid refresh token');
-    }
+    return { access_token: accessToken };
   }
 
   async validateToken(token: string) {
-    try {
-      const secret = this.configService.get('secretToken.secretToken');
+    const secret = this.configService.get('secretToken.secretToken');
 
-      const verify = this.jwtService.verifyAsync(token, { secret });
+    const verify = this.jwtService.verifyAsync(token, { secret });
 
-      if (!verify) {
-        throw new HttpException('Token is invalid', HttpStatus.BAD_REQUEST);
-      }
-
-      return verify;
-    } catch (error) {
-      return error;
+    if (!verify) {
+      throw new HttpException('Token is invalid', HttpStatus.BAD_REQUEST);
     }
+
+    return verify;
   }
 }

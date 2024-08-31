@@ -10,7 +10,6 @@ export class Auth {
     sparse: true,
     unique: true,
     trim: true,
-    match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email address.'],
   })
   mail: string;
 
@@ -23,7 +22,7 @@ export class Auth {
   @Prop()
   password: string;
 
-  @Prop({ sparse: true, unique: true })
+  @Prop()
   oauth: string;
 
   @Prop({ default: [Role.User] })

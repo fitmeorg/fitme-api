@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
+import { Auth } from '@modules/auth/store/auth.entity';
 
 export type UserDocument = User & Document;
 
@@ -8,15 +9,15 @@ export class User {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: false })
+  @Prop()
   imageProfile?: string;
 
   @Prop({
-    type: Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'Auth',
     unique: true,
   })
-  auth: Types.ObjectId;
+  auth: Auth;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
