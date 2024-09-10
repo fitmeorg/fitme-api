@@ -1,3 +1,3 @@
 export class AccountCreatedEvent {
-  account: string;
+  mail: string;
 }

@@ -50,6 +50,7 @@
     "ioredis": "^5.4.1",
     "joi": "^17.13.3",
     "mongoose": "^8.4.4",
+    "nodemailer": "^6.9.15",
     "passport": "^0.7.0",
     "passport-google-oauth2": "^0.2.0",
     "passport-google-oidc": "^0.1.0",
@@ -59,7 +60,8 @@
     "reflect-metadata": "^0.2.0",
     "rimraf": "^6.0.1",
     "rxjs": "^7.8.1",
-    "superagent": "^9.0.2"
+    "superagent": "^9.0.2",
+    "util.promisify": "^1.1.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
