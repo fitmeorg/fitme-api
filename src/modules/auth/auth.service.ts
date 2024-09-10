@@ -47,7 +47,9 @@ export class AuthService {
     });
 
     this.eventEmitter.emitEvent('account.created', {
-      account: parseEntity(user),
+      username: accessUser.username,
+      mail: accessUser.mail,
+      name: user.name,
     });
 
     return await this.tokenService.createUserToken({
