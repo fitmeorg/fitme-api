@@ -11,8 +11,8 @@ export class RoutineService {
     return this.routineRepository.create(createRoutineDto);
   }
 
-  async findAllRoutine(paginationOptions: PaginationOptions) {
-    return this.routineRepository.findAll({}, paginationOptions);
+  async findAllRoutine(paginationOptions: PaginationOptions, user: string) {
+    return this.routineRepository.findAll({ user }, paginationOptions);
   }
 
   async findOneRoutine(id: string) {

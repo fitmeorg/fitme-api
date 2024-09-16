@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Req,
 } from '@nestjs/common';
 import { RoutineService } from './routine.service';
 import { CreateRoutineDto } from './dto/create-routine.dto';
@@ -25,19 +26,24 @@ export class RoutineController {
   ) {}
 
   @Post()
-  @Roles([Role.Admin])
-  create(@Body() createRoutineDto: CreateRoutineDto) {
-    return this.routineService.createRoutine(createRoutineDto);
+  @Roles([Role.User])
+  create(@Body() createRoutineDto: CreateRoutineDto, @Req() request: Request) {
+    const user = request['user'];
+    return this.routineService.createRoutine({
+      ...createRoutineDto,
+      user: user.sub,
+    });
   }
 
   @Get()
   @Roles([Role.User])
-  findAll(@Query() query: FindAllRoutineDto) {
+  findAll(@Query() query: FindAllRoutineDto, @Req() request: Request) {
     const paginationOptions = this.paginationService.getPaginationOptions(
       query,
       filters,
     );
-    return this.routineService.findAllRoutine(paginationOptions);
+    const user = request['user'];
+    return this.routineService.findAllRoutine(paginationOptions, user.sub);
   }
 
   @Get(':id')

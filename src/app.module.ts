@@ -13,6 +13,9 @@ import { ExerciseModule } from './modules/exercise/exercise.module';
 import { RoutineModule } from './modules/routine/routine.module';
 import { CacheModule } from '@modules/cache/cache.module';
 import { EventEmitterModule } from '@modules/event-emitter/event-emitter.module';
+import { StreakModule } from './modules/streak/streak.module';
+import { ClusterModule } from './modules/cluster/cluster.module';
+import { ActivityModule } from './modules/activity/activity.module';
 
 @Module({
   imports: [
@@ -45,6 +48,9 @@ import { EventEmitterModule } from '@modules/event-emitter/event-emitter.module'
     ImagesModule,
     ExerciseModule,
     RoutineModule,
+    StreakModule,
+    ClusterModule,
+    ActivityModule,
   ],
 })
 export class AppModule {}
