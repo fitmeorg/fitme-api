@@ -20,7 +20,7 @@ export class Routine {
   @Prop()
   exercise_example: [{ url: string; name: string }];
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   createdBy: User;
 }
 

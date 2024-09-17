@@ -6,7 +6,7 @@ export type StreakDocument = HydratedDocument<Streak>;
 
 @Schema()
 export class Streak {
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user: User;
   @Prop({ required: true, type: Date, default: Date.now })
   last_update: Date;

@@ -15,7 +15,6 @@ import { CacheModule } from '@modules/cache/cache.module';
 import { EventEmitterModule } from '@modules/event-emitter/event-emitter.module';
 import { StreakModule } from './modules/streak/streak.module';
 import { GroupModule } from './modules/group/group.module';
-import { ActivityModule } from './modules/activity/activity.module';
 
 @Module({
   imports: [
@@ -50,7 +49,6 @@ import { ActivityModule } from './modules/activity/activity.module';
     RoutineModule,
     StreakModule,
     GroupModule,
-    ActivityModule,
   ],
 })
 export class AppModule {}

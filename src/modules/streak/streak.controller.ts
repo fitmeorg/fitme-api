@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Req } from '@nestjs/common';
+import { Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { StreakService } from './streak.service';
 import { Roles } from 'src/middlewares/guards/role/role.decorator';
 import { Role } from 'src/middlewares/guards/role/role.enum';
+import { ActivityTypes } from './types/types';
 
 @Controller('streak')
 export class StreakController {
@@ -9,9 +10,16 @@ export class StreakController {
 
   @Post()
   @Roles([Role.User])
-  create(@Req() request: Request) {
+  createStreak(@Req() request: Request) {
     const user = request['user'];
-    return this.streakService.create(user.sub);
+    return this.streakService.createStreak(user.sub);
+  }
+
+  @Post('activity/:type')
+  @Roles([Role.User])
+  createActivity(@Req() request: Request, @Param('type') type: ActivityTypes) {
+    const user = request['user'];
+    return this.streakService.createActivity(type, user.sub);
   }
 
   @Get()
