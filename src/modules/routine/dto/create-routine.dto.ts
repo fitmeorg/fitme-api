@@ -6,5 +6,5 @@ export class CreateRoutineDto {
   readonly exercises: Exercise[];
   readonly categories: Category[];
   readonly exercise_example: [{ url: string; name: string }];
-  readonly user: User;
+  readonly createdBy: User;
 }

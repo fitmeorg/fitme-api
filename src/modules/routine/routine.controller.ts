@@ -31,7 +31,7 @@ export class RoutineController {
     const user = request['user'];
     return this.routineService.createRoutine({
       ...createRoutineDto,
-      user: user.sub,
+      createdBy: user.sub,
     });
   }
 

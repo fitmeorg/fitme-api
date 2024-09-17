@@ -12,7 +12,10 @@ export class RoutineService {
   }
 
   async findAllRoutine(paginationOptions: PaginationOptions, user: string) {
-    return this.routineRepository.findAll({ user }, paginationOptions);
+    return this.routineRepository.findAll(
+      { createdBy: user },
+      paginationOptions,
+    );
   }
 
   async findOneRoutine(id: string) {
