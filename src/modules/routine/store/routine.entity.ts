@@ -21,7 +21,7 @@ export class Routine {
   exercise_example: [{ url: string; name: string }];
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
-  user: User;
+  createdBy: User;
 }
 
 export const RoutineSchema = SchemaFactory.createForClass(Routine);
