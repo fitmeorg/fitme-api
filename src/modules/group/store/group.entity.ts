@@ -1,12 +1,11 @@
-import { Image } from '@modules/images/store/Image.entity';
 import { User } from '@modules/user/store/user.entity';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 
-export type ClusterDocument = HydratedDocument<Cluster>;
+export type GroupDocument = HydratedDocument<Group>;
 
 @Schema()
-export class Cluster {
+export class Group {
   @Prop({ required: true })
   name: string;
   @Prop({
@@ -21,11 +20,6 @@ export class Cluster {
   members: User[];
   @Prop()
   description: string;
-  @Prop({
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Image' }],
-    default: '66cff45784042ac18c2d657a',
-  })
-  image: Image;
 }
 
-export const ClusterSchema = SchemaFactory.createForClass(Cluster);
+export const GroupSchema = SchemaFactory.createForClass(Group);

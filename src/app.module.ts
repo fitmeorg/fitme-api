@@ -14,7 +14,7 @@ import { RoutineModule } from './modules/routine/routine.module';
 import { CacheModule } from '@modules/cache/cache.module';
 import { EventEmitterModule } from '@modules/event-emitter/event-emitter.module';
 import { StreakModule } from './modules/streak/streak.module';
-import { ClusterModule } from './modules/cluster/cluster.module';
+import { GroupModule } from './modules/group/group.module';
 import { ActivityModule } from './modules/activity/activity.module';
 
 @Module({
@@ -49,7 +49,7 @@ import { ActivityModule } from './modules/activity/activity.module';
     ExerciseModule,
     RoutineModule,
     StreakModule,
-    ClusterModule,
+    GroupModule,
     ActivityModule,
   ],
 })
