@@ -22,6 +22,9 @@ export class Routine {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   createdBy: User;
+
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+  shareTo: User[];
 }
 
 export const RoutineSchema = SchemaFactory.createForClass(Routine);

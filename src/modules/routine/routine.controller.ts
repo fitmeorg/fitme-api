@@ -35,6 +35,25 @@ export class RoutineController {
     });
   }
 
+  @Post(':routineId/assign')
+  @Roles([Role.User])
+  assignRoutine(
+    @Param('routineId') routineId: string,
+    @Req() request: Request,
+  ) {
+    const user = request['user'];
+    return this.routineService.assignRoutineToUser(routineId, user.sub);
+  }
+
+  @Post(':userId/:routineId/share')
+  @Roles([Role.User])
+  shareRoutine(
+    @Param('userId') userId: string,
+    @Param('routineId') routineId: string,
+  ) {
+    return this.routineService.assignRoutineToUser(routineId, userId);
+  }
+
   @Get()
   @Roles([Role.User])
   findAll(@Query() query: FindAllRoutineDto, @Req() request: Request) {
