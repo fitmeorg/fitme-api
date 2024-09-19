@@ -45,13 +45,13 @@ export class RoutineController {
     return this.routineService.assignRoutineToUser(routineId, user.sub);
   }
 
-  @Post(':userId/:routineId/share')
+  @Post(':routineId/share/:userId')
   @Roles([Role.User])
   shareRoutine(
     @Param('userId') userId: string,
     @Param('routineId') routineId: string,
   ) {
-    return this.routineService.assignRoutineToUser(routineId, userId);
+    return this.routineService.shareRoutine(routineId, userId);
   }
 
   @Get()

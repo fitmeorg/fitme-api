@@ -1,7 +1,7 @@
 import { User } from '@modules/user/store/user.entity';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Date, HydratedDocument } from 'mongoose';
-import { ActivityTypes } from '../types/types';
+import { ActivityDTO } from '../dto/types';
 
 export type ActivityDocument = HydratedDocument<Activity>;
 
@@ -10,9 +10,9 @@ export class Activity {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user: User;
   @Prop({ required: true })
-  type: ActivityTypes;
+  type: ActivityDTO;
   @Prop({ required: true, type: Date, default: Date.now })
-  date: Date;
+  create_at: Date;
 }
 
 export const ActivitySchema = SchemaFactory.createForClass(Activity);

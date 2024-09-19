@@ -41,4 +41,14 @@ export class RoutineService {
 
     return routine.save();
   }
+
+  async shareRoutine(routineId: string, userId: any) {
+    const routine = await this.routineRepository.findByIdOrFail(routineId);
+
+    if (!routine.shareTo.includes(userId)) {
+      routine.shareTo.push(userId);
+    }
+
+    return routine.save();
+  }
 }

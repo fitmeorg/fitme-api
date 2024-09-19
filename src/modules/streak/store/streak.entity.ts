@@ -9,7 +9,7 @@ export class Streak {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user: User;
   @Prop({ required: true, type: Date, default: Date.now })
-  last_update: Date;
+  update_at: Date;
   @Prop({ required: true, default: 0 })
   count: number;
 }
