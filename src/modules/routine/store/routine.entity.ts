@@ -1,5 +1,6 @@
 import { Category } from '@modules/category/store/category.entity';
 import { Exercise } from '@modules/exercise/store/exercise.entity';
+import { User } from '@modules/user/store/user.entity';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 
@@ -17,7 +18,13 @@ export class Routine {
   categories: Category[];
 
   @Prop()
-  exercise_example: [{ url: string; name: string }];
+  exerciseExample: [{ url: string; name: string }];
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  createdBy: User;
+
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+  shareTo: User[];
 }
 
 export const RoutineSchema = SchemaFactory.createForClass(Routine);

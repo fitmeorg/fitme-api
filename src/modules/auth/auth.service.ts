@@ -52,6 +52,10 @@ export class AuthService {
       name: user.name,
     });
 
+    this.eventEmitter.emitEvent('streak.created', {
+      user: parseEntity(user._id),
+    });
+
     return await this.tokenService.createUserToken({
       id: parseEntity(user),
       username: accessUser.username,

@@ -14,7 +14,7 @@ export class Exercise {
   categories: Category[];
 
   @Prop()
-  duration_minutes?: number;
+  durationMinutes?: number;
 
   @Prop()
   repetitions?: number;

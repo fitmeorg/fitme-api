@@ -11,8 +11,12 @@ export class RoutineService {
     return this.routineRepository.create(createRoutineDto);
   }
 
-  async findAllRoutine(paginationOptions: PaginationOptions) {
-    return this.routineRepository.findAll({}, paginationOptions);
+  async findAllRoutine(paginationOptions: PaginationOptions, user: string) {
+    const filter = {
+      $or: [{ shareTo: user }, { createdBy: user }],
+    };
+
+    return this.routineRepository.findAll(filter, paginationOptions);
   }
 
   async findOneRoutine(id: string) {
@@ -26,5 +30,25 @@ export class RoutineService {
   async removeRoutine(id: string) {
     await this.routineRepository.remove(id);
     return HttpStatus.OK;
+  }
+
+  async assignRoutineToUser(routineId: string, userId: any) {
+    const routine = await this.routineRepository.findByIdOrFail(routineId);
+
+    if (!routine.shareTo.includes(userId)) {
+      routine.shareTo.push(userId);
+    }
+
+    return routine.save();
+  }
+
+  async shareRoutine(routineId: string, userId: any) {
+    const routine = await this.routineRepository.findByIdOrFail(routineId);
+
+    if (!routine.shareTo.includes(userId)) {
+      routine.shareTo.push(userId);
+    }
+
+    return routine.save();
   }
 }
