@@ -12,10 +12,10 @@ export class Image {
   name: string;
 
   @Prop()
-  create_by?: string;
+  createBy?: string;
 
   @Prop()
-  thumbnail_url?: string;
+  thumbnailUrl?: string;
 
   @Prop()
   size: number;
@@ -30,7 +30,7 @@ export class Image {
   width: number;
 
   @Prop({ default: Date.now() })
-  create_at: string;
+  createAt: string;
 }
 
 export const ImageSchema = SchemaFactory.createForClass(Image);

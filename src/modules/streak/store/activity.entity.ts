@@ -12,7 +12,7 @@ export class Activity {
   @Prop({ required: true })
   type: ActivityDTO;
   @Prop({ required: true, type: Date, default: Date.now })
-  create_at: Date;
+  createAt: Date;
 }
 
 export const ActivitySchema = SchemaFactory.createForClass(Activity);
