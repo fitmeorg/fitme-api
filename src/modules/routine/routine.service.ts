@@ -3,11 +3,31 @@ import { CreateRoutineDto } from './dto/create-routine.dto';
 import { UpdateRoutineDto } from './dto/update-routine.dto';
 import { RoutineRepository } from './store/routine.repository';
 import { PaginationOptions } from '@common/types';
+
+const MAXIMUM_NUMBER_ROUTINES = 7;
+
 @Injectable()
 export class RoutineService {
   constructor(private readonly routineRepository: RoutineRepository) {}
 
-  async createRoutine(createRoutineDto: CreateRoutineDto) {
+  async createRoutine(
+    paginationOptions: PaginationOptions,
+    createRoutineDto: CreateRoutineDto,
+  ) {
+    const routines = await this.findAllRoutine(
+      paginationOptions,
+      createRoutineDto.createdBy.toString(),
+    );
+
+    console.log(routines.data.length);
+
+    if (routines.data.length >= MAXIMUM_NUMBER_ROUTINES) {
+      return {
+        status: 403,
+        message: 'You have exceeded the maximum number of routines created',
+      };
+    }
+
     return this.routineRepository.create(createRoutineDto);
   }
 

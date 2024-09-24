@@ -29,7 +29,13 @@ export class RoutineController {
   @Roles([Role.User])
   create(@Body() createRoutineDto: CreateRoutineDto, @Req() request: Request) {
     const user = request['user'];
-    return this.routineService.createRoutine({
+
+    const paginationOptions = this.paginationService.getPaginationOptions(
+      { page: 0, limit: 8 },
+      filters,
+    );
+
+    return this.routineService.createRoutine(paginationOptions, {
       ...createRoutineDto,
       createdBy: user.sub,
     });
