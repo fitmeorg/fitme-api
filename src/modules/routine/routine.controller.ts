@@ -30,12 +30,7 @@ export class RoutineController {
   create(@Body() createRoutineDto: CreateRoutineDto, @Req() request: Request) {
     const user = request['user'];
 
-    const paginationOptions = this.paginationService.getPaginationOptions(
-      { page: 0, limit: 8 },
-      filters,
-    );
-
-    return this.routineService.createRoutine(paginationOptions, {
+    return this.routineService.createRoutine({
       ...createRoutineDto,
       createdBy: user.sub,
     });

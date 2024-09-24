@@ -3,6 +3,7 @@ import { CreateRoutineDto } from './dto/create-routine.dto';
 import { UpdateRoutineDto } from './dto/update-routine.dto';
 import { RoutineRepository } from './store/routine.repository';
 import { PaginationOptions } from '@common/types';
+import { filterFindAll } from './pagination/filter';
 
 const MAXIMUM_NUMBER_ROUTINES = 7;
 
@@ -10,16 +11,10 @@ const MAXIMUM_NUMBER_ROUTINES = 7;
 export class RoutineService {
   constructor(private readonly routineRepository: RoutineRepository) {}
 
-  async createRoutine(
-    paginationOptions: PaginationOptions,
-    createRoutineDto: CreateRoutineDto,
-  ) {
-    const routines = await this.findAllRoutine(
-      paginationOptions,
-      createRoutineDto.createdBy.toString(),
-    );
+  async createRoutine(createRoutineDto: CreateRoutineDto) {
+    const filter = filterFindAll(createRoutineDto.createdBy.toString());
 
-    console.log(routines.data.length);
+    const routines = await this.routineRepository.findAll(filter);
 
     if (routines.data.length >= MAXIMUM_NUMBER_ROUTINES) {
       return {
@@ -32,9 +27,7 @@ export class RoutineService {
   }
 
   async findAllRoutine(paginationOptions: PaginationOptions, user: string) {
-    const filter = {
-      $or: [{ shareTo: user }, { createdBy: user }],
-    };
+    const filter = filterFindAll(user);
 
     return this.routineRepository.findAll(filter, paginationOptions);
   }

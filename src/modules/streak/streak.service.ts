@@ -11,23 +11,7 @@ export class StreakService {
   ) {}
 
   async createActivity(type: string, userId: any) {
-    const typeData: ActivityDTO = {
-      free: type === 'LIBRE' ? 'LIBRE' : undefined,
-      sport: type === 'DEPORTE' ? 'DEPORTE' : undefined,
-      diet: type === 'DIETA' ? 'DIETA' : undefined,
-      myRoutine: type === 'MY_RUTINA' ? 'MY_RUTINA' : undefined,
-    };
-
-    if (
-      !typeData.free &&
-      !typeData.sport &&
-      !typeData.diet &&
-      !typeData.myRoutine
-    ) {
-      throw new Error(
-        'At least one of the fields must be provided (free, sport, diet, myRoutine).',
-      );
-    }
+    const typeData = new ActivityDTO(type);
 
     const streak = await this.streakRepository.findOneOrFail({
       user: userId,
