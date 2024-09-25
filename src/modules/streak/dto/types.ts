@@ -2,27 +2,27 @@ import { IsOptional, IsIn } from 'class-validator';
 
 export class ActivityDTO {
   @IsOptional()
-  @IsIn(['LIBRE'])
+  @IsIn(['FREE'])
   readonly free?: string;
 
   @IsOptional()
-  @IsIn(['MY_RUTINA'])
+  @IsIn(['MY_ROUTINE'])
   readonly myRoutine?: string;
 
   @IsOptional()
-  @IsIn(['DEPORTE'])
+  @IsIn(['SPORT'])
   readonly sport?: string;
 
   @IsOptional()
-  @IsIn(['DIETA'])
+  @IsIn(['DIET'])
   readonly diet?: string;
 
   constructor(type: string) {
     const typeMapping: { [key: string]: keyof ActivityDTO } = {
-      LIBRE: 'free',
-      MY_RUTINA: 'myRoutine',
-      DEPORTE: 'sport',
-      DIETA: 'diet',
+      FREE: 'free',
+      MY_ROUTINE: 'myRoutine',
+      SPORT: 'sport',
+      DIET: 'diet',
     };
 
     const dtoKey = typeMapping[type];
