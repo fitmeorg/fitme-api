@@ -4,6 +4,7 @@ import { UpdateRoutineDto } from './dto/update-routine.dto';
 import { RoutineRepository } from './store/routine.repository';
 import { PaginationOptions } from '@common/types';
 import { filterFindAll } from './pagination/filter';
+import { parseEntity } from '@common/util';
 
 const MAXIMUM_NUMBER_ROUTINES = 7;
 
@@ -12,7 +13,7 @@ export class RoutineService {
   constructor(private readonly routineRepository: RoutineRepository) {}
 
   async createRoutine(createRoutineDto: CreateRoutineDto) {
-    const filter = filterFindAll(createRoutineDto.createdBy.toString());
+    const filter = filterFindAll(parseEntity(createRoutineDto.createdBy));
 
     const routines = await this.routineRepository.findAll(filter);
 
