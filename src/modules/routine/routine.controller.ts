@@ -29,6 +29,7 @@ export class RoutineController {
   @Roles([Role.User])
   create(@Body() createRoutineDto: CreateRoutineDto, @Req() request: Request) {
     const user = request['user'];
+
     return this.routineService.createRoutine({
       ...createRoutineDto,
       createdBy: user.sub,

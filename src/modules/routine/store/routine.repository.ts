@@ -15,6 +15,8 @@ export class RoutineRepository extends BaseRepository<RoutineDocument> {
       'exercises.categories',
       'exercises.images',
       'categories',
+      'createdBy',
+      'shareTo',
     ]);
   }
 }

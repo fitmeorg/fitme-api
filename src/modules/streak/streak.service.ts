@@ -10,7 +10,9 @@ export class StreakService {
     private readonly activityRepository: ActivityRepository,
   ) {}
 
-  async createActivity(type: ActivityDTO, userId: any) {
+  async createActivity(type: string, userId: any) {
+    const typeData = new ActivityDTO(type);
+
     const streak = await this.streakRepository.findOneOrFail({
       user: userId,
     });
@@ -20,12 +22,16 @@ export class StreakService {
     });
 
     return this.activityRepository.create({
-      type,
+      type: typeData,
       user: userId,
     });
   }
 
   async createStreak(user: { user: any }) {
     return this.streakRepository.create(user);
+  }
+
+  async findStreak(user: any) {
+    return this.streakRepository.findOne({ user });
   }
 }

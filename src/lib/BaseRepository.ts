@@ -87,7 +87,16 @@ export class BaseRepository<T extends Document> {
     paginationOptions?: PaginationOptions,
     populateOptions?: string[],
   ) {
-    const { page, limit, filters } = paginationOptions;
+    let page = 0;
+    let limit = 10;
+    let filters: Filter[];
+
+    if (paginationOptions !== undefined) {
+      page = paginationOptions.page;
+      limit = paginationOptions.limit;
+      filters = paginationOptions.filters;
+    }
+
     const offset = (page - 1) * limit;
 
     let query = this.model.find(filter);
