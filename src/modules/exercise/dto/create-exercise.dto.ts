@@ -1,5 +1,5 @@
 import { Category } from '@modules/category/store/category.entity';
-import { Image } from '@modules/images/store/Image.entity';
+import { Image } from '@modules/images/store/image.entity';
 export class CreateExerciseDto {
   readonly name: string;
   readonly categories: Category[];
