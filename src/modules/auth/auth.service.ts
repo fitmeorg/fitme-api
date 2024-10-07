@@ -47,6 +47,7 @@ export class AuthService {
     });
 
     this.eventEmitter.emitEvent('account.created', {
+      user: user._id,
       username: accessUser.username,
       mail: accessUser.mail,
       name: user.name,
@@ -54,6 +55,7 @@ export class AuthService {
 
     this.eventEmitter.emitEvent('streak.created', {
       user: parseEntity(user._id),
+      timeZone: 'Europe/Paris',
     });
 
     return await this.tokenService.createUserToken({

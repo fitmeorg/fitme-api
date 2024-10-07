@@ -132,6 +132,15 @@ export class BaseRepository<T extends Document> {
     return this.applyPopulate(document, PopulateOptions).exec();
   }
 
+  async findAllSelect(
+    filter: FilterQuery<T>,
+    select?: string,
+    PopulateOptions?: string[],
+  ) {
+    const documents = this.model.find(filter).select(select);
+    return this.applyPopulate(documents, PopulateOptions);
+  }
+
   async findOneOrFail(
     filter: FilterQuery<T>,
     PopulateOptions?: string[],
@@ -173,6 +182,16 @@ export class BaseRepository<T extends Document> {
       .findByIdAndUpdate(id, updateDto, { new: true })
       .exec();
     return { previous, updated };
+  }
+
+  async updateMany(
+    filterSearch: FilterQuery<T>,
+    filterUpdate: FilterQuery<T>,
+    PopulateOptions?: string[],
+  ): Promise<T> {
+    const document = this.model.updateMany(filterSearch, filterUpdate);
+
+    return this.applyPopulate(document, PopulateOptions).exec();
   }
 
   async remove(id: string): Promise<T> {

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { HealthCheckModule } from './modules/health-check/health-check.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { BullModule } from '@nestjs/bull';
+import { BullModule } from '@nestjs/bullmq';
 import { config, configSchemaValidation } from './config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './modules/auth/auth.module';
@@ -15,6 +15,8 @@ import { CacheModule } from '@modules/cache/cache.module';
 import { EventEmitterModule } from '@modules/event-emitter/event-emitter.module';
 import { StreakModule } from './modules/streak/streak.module';
 import { GroupModule } from './modules/group/group.module';
+import { SeederModule } from './modules/seeder/seeder.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -23,12 +25,11 @@ import { GroupModule } from './modules/group/group.module';
       load: config,
       validationSchema: configSchemaValidation,
     }),
-    BullModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        url: configService.get('redis').url,
-      }),
-      inject: [ConfigService],
+    BullModule.forRoot({
+      connection: {
+        host: 'localhost',
+        port: 6379,
+      },
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -37,6 +38,7 @@ import { GroupModule } from './modules/group/group.module';
       }),
       inject: [ConfigService],
     }),
+    ScheduleModule.forRoot(),
     HealthCheckModule,
     AuthModule,
     UserModule,
@@ -49,6 +51,7 @@ import { GroupModule } from './modules/group/group.module';
     RoutineModule,
     StreakModule,
     GroupModule,
+    SeederModule,
   ],
 })
 export class AppModule {}

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ImageDocument, Image } from './Image.entity';
+import { Image, ImageDocument } from './image.entity';
 import { BaseRepository } from 'src/lib/BaseRepository';
 
 @Injectable()

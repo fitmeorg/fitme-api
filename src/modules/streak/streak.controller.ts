@@ -26,4 +26,9 @@ export class StreakController {
     const user = request['user'];
     return this.streakService.findStreak(user.sub);
   }
+
+  @Post()
+  updateInactiveStreak() {
+    return this.streakService.updateInactiveStreak();
+  }
 }
