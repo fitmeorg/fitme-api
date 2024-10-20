@@ -25,11 +25,15 @@ import { ScheduleModule } from '@nestjs/schedule';
       load: config,
       validationSchema: configSchemaValidation,
     }),
-    BullModule.forRoot({
-      connection: {
-        host: 'localhost',
-        port: 6379,
-      },
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        connection: {
+          host: configService.get('bullmq').host,
+          port: configService.get('bullmq').port,
+        },
+      }),
+      inject: [ConfigService],
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],

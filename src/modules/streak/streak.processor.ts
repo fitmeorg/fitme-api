@@ -19,7 +19,7 @@ export class StreakConsumer extends WorkerHost {
       const nowInZone = DateTime.now().setZone(country);
       const hour = nowInZone.hour;
 
-      return hour === 12;
+      return hour === 0;
     });
 
     const startDay = DateTime.now()
@@ -29,7 +29,7 @@ export class StreakConsumer extends WorkerHost {
 
     let outdatedStreaks = [''];
 
-    while (outdatedStreaks.length > 0 && (await job.isActive())) {
+    while (outdatedStreaks.length > 0) {
       outdatedStreaks = await this.streakRepository.findAllSelect(
         {
           count: { $gt: 0 },
