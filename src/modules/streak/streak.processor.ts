@@ -19,7 +19,7 @@ export class StreakConsumer extends WorkerHost {
       const nowInZone = DateTime.now().setZone(country);
       const hour = nowInZone.hour;
 
-      return hour === 0;
+      return hour === 12;
     });
 
     const startDay = DateTime.now()
@@ -27,21 +27,25 @@ export class StreakConsumer extends WorkerHost {
       .startOf('day')
       .toISO();
 
-    const filterSearch = {
-      count: { $gt: 0 },
-      timeZone: { $in: midnightToOneAMZones },
-      updatedAt: { $lte: new Date(startDay) },
-    };
+    let outdatedStreaks = [''];
 
-    const outdatedStreaks = await this.streakRepository.findAllSelect(
-      filterSearch,
-      'user',
-    );
+    while (outdatedStreaks.length > 0 && (await job.isActive())) {
+      outdatedStreaks = await this.streakRepository.findAllSelect(
+        {
+          count: { $gt: 0 },
+          timeZone: { $in: midnightToOneAMZones },
+          updatedAt: { $lte: new Date(startDay) },
+        },
+        'user',
+        10000,
+      );
 
-    if (outdatedStreaks.length > 0) {
-      await this.streakRepository.updateMany(filterSearch, {
-        $set: { count: 0 },
-      });
+      await this.streakRepository.updateMany(
+        { user: { $in: outdatedStreaks } },
+        {
+          $set: { count: 0 },
+        },
+      );
 
       this.eventEmitter.emitEvent('remove.streak', outdatedStreaks);
     }

@@ -26,7 +26,8 @@ export class AuthService {
   ) {}
 
   async register(registerDTO: RegisterDTO) {
-    const { password, name, username, mail, ...optionalOptions } = registerDTO;
+    const { timeZone, password, name, username, mail, ...optionalOptions } =
+      registerDTO;
 
     await this.authRepository.failIfExist({
       username,
@@ -55,7 +56,7 @@ export class AuthService {
 
     this.eventEmitter.emitEvent('streak.created', {
       user: parseEntity(user._id),
-      timeZone: 'Europe/Paris',
+      timeZone,
     });
 
     return await this.tokenService.createUserToken({

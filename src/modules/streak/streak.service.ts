@@ -40,20 +40,6 @@ export class StreakService {
     return this.streakRepository.findOne({ user });
   }
 
-  async updateInactiveStreak() {
-    await this.updateQueue.add(
-      'update-streaks',
-      {},
-      {
-        attempts: 3,
-        backoff: 5000,
-        removeOnFail: true,
-      },
-    );
-
-    return 200;
-  }
-
   @Cron('0 0 * * * *', {
     name: 'remove-streak',
     utcOffset: 0,

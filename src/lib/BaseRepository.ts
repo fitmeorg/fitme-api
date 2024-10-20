@@ -132,13 +132,26 @@ export class BaseRepository<T extends Document> {
     return this.applyPopulate(document, PopulateOptions).exec();
   }
 
-  async findAllSelect(
-    filter: FilterQuery<T>,
-    select?: string,
-    PopulateOptions?: string[],
-  ) {
-    const documents = this.model.find(filter).select(select);
-    return this.applyPopulate(documents, PopulateOptions);
+  async findAllSelect(filter: FilterQuery<T>, distinct?: any, limit?: number) {
+    const aggregationPipeline = [];
+
+    aggregationPipeline.push({ $match: filter });
+
+    if (distinct) {
+      aggregationPipeline.push({
+        $group: {
+          _id: `$${distinct}`,
+        },
+      });
+    }
+
+    if (limit) {
+      aggregationPipeline.push({ $limit: limit });
+    }
+
+    const documents = await this.model.aggregate(aggregationPipeline);
+
+    return documents;
   }
 
   async findOneOrFail(

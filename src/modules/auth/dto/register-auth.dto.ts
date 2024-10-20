@@ -8,4 +8,5 @@ export class RegisterDTO {
   @IsOptional()
   readonly phone?: string;
   readonly password: string;
+  readonly timeZone: string;
 }

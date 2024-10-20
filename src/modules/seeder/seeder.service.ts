@@ -8,7 +8,7 @@ import { Auth } from './store/auth.entity';
 import { faker } from '@faker-js/faker';
 import { Notification } from './store/notification.entity';
 
-const MAXIMUM_NUMBER_SEEDERS = 1000;
+const MAXIMUM_NUMBER_SEEDERS = 141543;
 
 @Injectable()
 export class SeederService implements Seeder {
