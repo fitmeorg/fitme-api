@@ -18,7 +18,6 @@ export class StreakConsumer extends WorkerHost {
     const midnightToOneAMZones: string[] = tzCode.filter((country) => {
       const nowInZone = DateTime.now().setZone(country);
       const hour = nowInZone.hour;
-
       return hour === 0;
     });
 
@@ -40,14 +39,15 @@ export class StreakConsumer extends WorkerHost {
         10000,
       );
 
-      await this.streakRepository.updateMany(
-        { user: { $in: outdatedStreaks } },
-        {
-          $set: { count: 0 },
-        },
-      );
-
-      this.eventEmitter.emitEvent('remove.streak', outdatedStreaks);
+      if (outdatedStreaks.length > 0) {
+        await this.streakRepository.updateMany(
+          { user: { $in: outdatedStreaks } },
+          {
+            $set: { count: 0 },
+          },
+        );
+        this.eventEmitter.emitEvent('remove.streak', outdatedStreaks);
+      }
     }
   }
 }

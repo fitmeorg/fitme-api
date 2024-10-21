@@ -8,7 +8,7 @@ describe('StreakConsumer', () => {
   let streakRepositoryMock: jest.Mocked<StreakRepository>;
   let eventEmitterMock: jest.Mocked<EventEmitterService>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     streakRepositoryMock = {
       findAllSelect: jest.fn(),
       updateMany: jest.fn(),
@@ -21,32 +21,49 @@ describe('StreakConsumer', () => {
     streakConsumer = new StreakConsumer(streakRepositoryMock, eventEmitterMock);
   });
 
-  it('should process job and update streaks', async () => {
+  it('should process and update streaks in batches of 0, 5000, 10000, and 90000', async () => {
     const mockJob = { id: '1' } as Job;
 
-    const outdatedStreaks = [{ user: 'user1' }, { user: 'user2' }];
-    streakRepositoryMock.findAllSelect.mockResolvedValueOnce(outdatedStreaks);
+    const batch1 = new Array(5000).fill({ user: 'user1' });
+    const batch2 = new Array(10000).fill({ user: 'user2' });
+    const batch3 = new Array(90000).fill({ user: 'user3' });
+
+    streakRepositoryMock.findAllSelect
+      .mockResolvedValueOnce(batch1)
+      .mockResolvedValueOnce(batch2)
+      .mockResolvedValueOnce(batch3)
+      .mockResolvedValueOnce([]);
 
     await streakConsumer.process(mockJob);
 
-    expect(streakRepositoryMock.findAllSelect).toHaveBeenCalled();
+    expect(streakRepositoryMock.findAllSelect).toHaveBeenCalledTimes(4);
+
+    expect(streakRepositoryMock.updateMany).toHaveBeenCalledTimes(3);
     expect(streakRepositoryMock.updateMany).toHaveBeenCalledWith(
-      expect.any(Object),
+      { user: { $in: batch1 } },
       { $set: { count: 0 } },
+    );
+    expect(streakRepositoryMock.updateMany).toHaveBeenCalledWith(
+      { user: { $in: batch2 } },
+      { $set: { count: 0 } },
+    );
+    expect(streakRepositoryMock.updateMany).toHaveBeenCalledWith(
+      { user: { $in: batch3 } },
+      { $set: { count: 0 } },
+    );
+
+    expect(eventEmitterMock.emitEvent).toHaveBeenCalledTimes(3);
+    expect(eventEmitterMock.emitEvent).toHaveBeenCalledWith(
+      'remove.streak',
+      batch1,
     );
     expect(eventEmitterMock.emitEvent).toHaveBeenCalledWith(
       'remove.streak',
-      outdatedStreaks,
+      batch2,
     );
-  });
-
-  it('should skip update if no outdated streaks are found', async () => {
-    const mockJob = { id: '1' } as Job;
-    streakRepositoryMock.findAllSelect.mockResolvedValueOnce([]);
-
-    await streakConsumer.process(mockJob);
-
-    expect(streakRepositoryMock.updateMany).not.toHaveBeenCalled();
-    expect(eventEmitterMock.emitEvent).not.toHaveBeenCalled();
+    expect(eventEmitterMock.emitEvent).toHaveBeenCalledWith(
+      'remove.streak',
+      batch3,
+    );
   });
 });
