@@ -12,6 +12,7 @@ import { ForgotPassword } from './dto/forgotPassword-auth.dto';
 import { ChangePassword } from './dto/changePassword-auth.dto';
 import { EventEmitterService } from '@modules/event-emitter/event-emitter.service';
 import { parseEntity } from '@common/util';
+import { PaginationOptions } from '@common/types';
 
 const SALT = 10;
 const MAX_AGE = 60 * 60 * 60 * 24 * 7;
@@ -203,5 +204,9 @@ export class AuthService {
 
   logout() {
     return { access_token: '' };
+  }
+
+  async findAuthUsername(paginationOptions: PaginationOptions) {
+    return this.authRepository.findAll({}, paginationOptions);
   }
 }

@@ -40,6 +40,14 @@ export class StreakService {
     return this.streakRepository.findOne({ user });
   }
 
+  async findAllStreak(users: any, paginationOptions) {
+    return this.streakRepository.findAll(
+      { user: { $in: users } },
+      paginationOptions,
+      ['user'],
+    );
+  }
+
   @Cron('0 0 * * * *', {
     name: 'remove-streak',
     utcOffset: 0,

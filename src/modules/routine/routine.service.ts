@@ -65,4 +65,10 @@ export class RoutineService {
 
     return routine.save();
   }
+
+  async findAssignedUser(user: string) {
+    return this.routineRepository.findOneOrFail({
+      shareTo: { $in: [user] },
+    });
+  }
 }
