@@ -7,7 +7,7 @@ import { ImagesService } from '@modules/images/images.service';
 import { ImagesModule } from '@modules/images/images.module';
 import { TokenModule } from '@modules/token/token.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ImageSchema, Image } from '@modules/images/store/Image.entity';
+import { Image, ImageSchema } from '@modules/images/store/image.entity';
 import { ExerciseSchema, Exercise } from './store/exercise.entity';
 import {
   CategorySchema,

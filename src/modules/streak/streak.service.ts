@@ -3,11 +3,16 @@ import { StreakRepository } from './store/streak.repository';
 import { ActivityRepository } from './store/activity.repository';
 import { parseEntity } from '@common/util';
 import { ActivityDTO } from './dto/types';
+import { Cron } from '@nestjs/schedule';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bullmq';
+
 @Injectable()
 export class StreakService {
   constructor(
     private readonly streakRepository: StreakRepository,
     private readonly activityRepository: ActivityRepository,
+    @InjectQueue('update') private updateQueue: Queue,
   ) {}
 
   async createActivity(type: string, userId: any) {
@@ -33,5 +38,21 @@ export class StreakService {
 
   async findStreak(user: any) {
     return this.streakRepository.findOne({ user });
+  }
+
+  @Cron('0 0 * * * *', {
+    name: 'remove-streak',
+    utcOffset: 0,
+  })
+  async removeStreakAndSendEmailJob() {
+    await this.updateQueue.add(
+      'update-streaks',
+      {},
+      {
+        attempts: 3,
+        backoff: 5000,
+        removeOnFail: true,
+      },
+    );
   }
 }

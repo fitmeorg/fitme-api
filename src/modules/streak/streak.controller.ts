@@ -3,9 +3,13 @@ import { StreakService } from './streak.service';
 import { Roles } from 'src/middlewares/guards/role/role.decorator';
 import { Role } from 'src/middlewares/guards/role/role.enum';
 import { EventPattern } from '@nestjs/microservices';
+import { EventEmitterService } from '@modules/event-emitter/event-emitter.service';
 @Controller('streak')
 export class StreakController {
-  constructor(private readonly streakService: StreakService) {}
+  constructor(
+    private readonly streakService: StreakService,
+    private readonly eventEmitter: EventEmitterService,
+  ) {}
 
   @Post('activity/:type')
   @Roles([Role.User])
