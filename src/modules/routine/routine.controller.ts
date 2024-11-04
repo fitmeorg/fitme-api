@@ -72,6 +72,12 @@ export class RoutineController {
     return this.routineService.findOneRoutine(id);
   }
 
+  @Get('shareTo/:id')
+  @Roles([Role.User])
+  findAssignedRoutine(@Param('id') id: string) {
+    return this.routineService.findAssignedUser(id);
+  }
+
   @Patch(':id')
   @Roles([Role.Admin])
   update(@Param('id') id: string, @Body() updateRoutineDto: UpdateRoutineDto) {

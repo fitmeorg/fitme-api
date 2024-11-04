@@ -105,6 +105,12 @@ export class BaseRepository<T extends Document> {
 
     const countQuery = this.model.find(query.getFilter());
 
+    if (paginationOptions && paginationOptions.sort) {
+      query = query.sort({
+        [paginationOptions.sort.by]: paginationOptions.sort.order,
+      });
+    }
+
     if (offset >= 0 && limit >= 1) {
       query = this.applyPagination(query, offset, limit);
     }
