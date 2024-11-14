@@ -8,6 +8,7 @@ import {
   Res,
   Param,
   Patch,
+  Query,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/login-auth.dto';
@@ -17,10 +18,18 @@ import { ApiTags } from '@nestjs/swagger';
 import { GoogleOauthGuard } from 'src/middlewares/guards/google-auth/google-auth.guard';
 import { ForgotPassword } from './dto/forgotPassword-auth.dto';
 import { ChangePassword } from './dto/changePassword-auth.dto';
+import { Roles } from 'src/middlewares/guards/role/role.decorator';
+import { Role } from 'src/middlewares/guards/role/role.enum';
+import { FindAuthDto } from './dto/find-auth.dto';
+import { PaginationService } from '@modules/pagination/pagination.service';
+import { filters } from './constants/filter';
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly paginationService: PaginationService,
+  ) {}
 
   @Post('login')
   login(@Body() loginDTO: LoginDTO) {
@@ -65,5 +74,16 @@ export class AuthController {
   @UseGuards(GoogleOauthGuard)
   googleAuthCallback(@Req() req, @Res() res: Response) {
     return this.authService.googleAuthCallback(req, res);
+  }
+
+  @Get()
+  @Roles([Role.User])
+  findAuth(@Query() query: FindAuthDto) {
+    const paginationOptions = this.paginationService.getPaginationOptions(
+      query,
+      filters,
+    );
+
+    return this.authService.findAuthUsername(paginationOptions);
   }
 }

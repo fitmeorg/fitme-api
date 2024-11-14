@@ -19,7 +19,7 @@ export class GroupService {
   }
 
   async findOne(id: string) {
-    return this.groupRepository.findById(id);
+    return this.groupRepository.findById(id, ['admins', 'members']);
   }
 
   async findAll(user: any, query) {

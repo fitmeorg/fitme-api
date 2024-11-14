@@ -10,6 +10,6 @@ export class UserRepository extends BaseRepository<UserDocument> {
     @InjectModel(User.name)
     private readonly userModel: Model<UserDocument>,
   ) {
-    super(userModel, User.name, ['auth']);
+    super(userModel, User.name);
   }
 }

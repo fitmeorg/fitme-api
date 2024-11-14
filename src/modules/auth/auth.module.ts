@@ -13,6 +13,7 @@ import { TokenAuthModule } from 'src/middlewares/guards/token-auth/token.module'
 import { GoogleStrategy } from '@modules/auth/strategies/google.strategy';
 import { GoogleOauthGuard } from 'src/middlewares/guards/google-auth/google-auth.guard';
 import { EventEmitterModule } from '@modules/event-emitter/event-emitter.module';
+import { PaginationService } from '@modules/pagination/pagination.service';
 
 @Module({
   imports: [
@@ -34,6 +35,12 @@ import { EventEmitterModule } from '@modules/event-emitter/event-emitter.module'
     EventEmitterModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, AuthRepository, GoogleStrategy, GoogleOauthGuard],
+  providers: [
+    AuthService,
+    AuthRepository,
+    GoogleStrategy,
+    GoogleOauthGuard,
+    PaginationService,
+  ],
 })
 export class AuthModule {}
