@@ -43,4 +43,13 @@ export class StreakController {
 
     return this.streakService.findAllStreak(users.users, paginationOptions);
   }
+
+  @Post('v2/all/')
+  @Roles([Role.User])
+  findAllStreakV2(@Body() users: AllStreaks, @Query() query: PaginationQueryDto) {
+    const paginationOptions =
+      this.paginationService.getPaginationOptions(query);
+
+    return this.streakService.findAllStreak(users.users, paginationOptions);
+  }
 }
